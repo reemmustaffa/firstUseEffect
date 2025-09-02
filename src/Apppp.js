@@ -52,16 +52,13 @@ const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 const key = "f84fc31d";
-export default function App() {
+export default function Apppp() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-  const [watched, setWatched] = useState(function () {
-    let storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue);
-  });
 
   function handleSelection(id) {
     setSelectedId((selectedId) => (selectedId === id ? null : id));
@@ -72,18 +69,10 @@ export default function App() {
   }
   function handleAddMovie(movie) {
     setWatched((watched) => [...watched, movie]);
-    // localStorage.setItem("watched", JSON.stringify([...watched, movie]));
   }
   function handleDeleteMovie(id) {
     setWatched((watched) => watched.filter((w) => w.imdbID !== id));
   }
-
-  useEffect(
-    function () {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
-  );
 
   const tempQuery = "interstellar";
 
@@ -227,11 +216,6 @@ function Logo() {
 }
 
 function Search({ query, setQuery }) {
-  useEffect(function () {
-    const el = document.querySelector(".search");
-    console.log(el);
-    el.focus();
-  }, []);
   return (
     <input
       className="search"
@@ -339,18 +323,6 @@ function MovieDetails({ selectedId, handleClose, handleAddMovie, watched }) {
     Released: released,
     Genre: genre,
   } = movie;
-  // const [isTop, setIsTop] = useState(imdbRating > 8);
-  // console.log(isTop);
-  // useEffect(
-  //   function () {
-  //     setIsTop(imdbRating > 8);
-  //   },
-  //   [imdbRating]
-  // );
-
-  const top = imdbRating > 8;
-  console.log(top);
-
   function onAddMovie() {
     const newWatchedMovie = {
       imdbID: selectedId,
@@ -362,7 +334,6 @@ function MovieDetails({ selectedId, handleClose, handleAddMovie, watched }) {
       userRating,
     };
     handleAddMovie(newWatchedMovie);
-
     handleClose();
   }
   useEffect(
